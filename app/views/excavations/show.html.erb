@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @excavation.name %>
+</p>
+
+<p>
+  <strong>Dai gazetter:</strong>
+  <%= @excavation.dai_gazetter_id %>
+</p>
+
+<p>
+  <strong>Shortcut:</strong>
+  <%= @excavation.shortcut %>
+</p>
+
+<%= link_to 'Edit', edit_excavation_path(@excavation) %> |
+<%= link_to 'Back', excavations_path %>

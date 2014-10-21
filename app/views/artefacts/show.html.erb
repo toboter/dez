@@ -1,0 +1,42 @@
+<p>
+  <strong>Dez:</strong>
+  <%= @artefact.dez %>
+</p>
+
+<p>
+  <strong>Dez index:</strong>
+  <%= @artefact.dez_index %>
+</p>
+
+<p>
+  <strong>Dimensions:</strong>
+  <%= @artefact.dimensions %>
+</p>
+
+<p>
+  <strong>Dimensions type:</strong>
+  <%= @artefact.dimensions_type %>
+</p>
+
+<p>
+  <strong>Weight:</strong>
+  <%= @artefact.weight %>
+</p>
+
+<p>
+  <strong>In exhibition:</strong>
+  <%= @artefact.in_exhibition %>
+</p>
+
+<p>
+  <strong>Creator:</strong>
+  <%= @artefact.creator_id %>
+</p>
+
+<p>
+  <strong>Updater:</strong>
+  <%= @artefact.updater_id %>
+</p>
+
+<%= link_to 'Edit', edit_artefact_path(@artefact) %> |
+<%= link_to 'Back', artefacts_path %>

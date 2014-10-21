@@ -1,0 +1,29 @@
+<h1>Listing excavations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Dai gazetter</th>
+      <th>Shortcut</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @excavations.each do |excavation| %>
+      <tr>
+        <td><%= excavation.name %></td>
+        <td><%= excavation.dai_gazetter_id %></td>
+        <td><%= excavation.shortcut %></td>
+        <td><%= link_to 'Show', excavation %></td>
+        <td><%= link_to 'Edit', edit_excavation_path(excavation) %></td>
+        <td><%= link_to 'Destroy', excavation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Excavation', new_excavation_path %>

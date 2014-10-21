@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  dai_gazetter_id: 1
+  shortcut: MyString
+
+two:
+  name: MyString
+  dai_gazetter_id: 1
+  shortcut: MyString

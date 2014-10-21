@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  dimensions: MyString
+  dimensions_type: MyString
+  weight: MyString
+  condition_comment: MyString
+  creator_id: 1
+  updater_id: 1
+
+two:
+  dimensions: MyString
+  dimensions_type: MyString
+  weight: MyString
+  condition_comment: MyString
+  creator_id: 1
+  updater_id: 1
