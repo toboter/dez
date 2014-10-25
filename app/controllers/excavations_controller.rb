@@ -1,4 +1,5 @@
 class ExcavationsController < ApplicationController
+  layout 'page'
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_excavation, only: [:show, :edit, :update, :destroy]
 

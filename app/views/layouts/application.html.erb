@@ -1,26 +1,91 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>DeirMuseum</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-  <% if user_signed_in? %>
-    Logged in as <strong><%= current_user.email %></strong>.
-    <%= link_to 'Edit profile', edit_user_registration_path %> |
-    <%= link_to "Logout", destroy_user_session_path, method: :delete %>
-  <% else %>
-    <%= link_to "Sign up", new_user_registration_path %> |
-    <%= link_to "Login", new_user_session_path %>
-  <% end %>
-  <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
-  
-  <div class="container-fluid">
-    <%= yield %>
-  </div>
+  <head>
+    <%= yield(:head) if content_for?(:head) %>
+    <title>MusDeirDB <%= content_for?(:title) ? yield(:title) : '' %></title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div class="navbar-wrapper">
+      <div class="container">
+        <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <%= link_to 'MusDeirDB', root_path, class: 'navbar-brand' %>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li class="<%= 'active' if current_page?(controller: '/artefacts') %>"><%= link_to 'Artefacts', artefacts_path %></li>
+                <li class="<%= 'active' if current_page?(controller: '/excavations') %>"><%= link_to 'Excavations', excavations_path %></li>
+                <li class="<%= 'active' if current_page?(controller: '/vocabularies') %>"><%= link_to 'Vocabulary', vocabularies_path %></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                  <% if user_signed_in? %>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      Logged in as <strong><%= current_user.email %></strong>. 
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><%= link_to 'Edit profile', edit_user_registration_path %></li>
+                      <li><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>
+                    </ul>
+                  <% else %>
+                    <li><%= link_to "Sign up", new_user_registration_path %></li>
+                    <li><%= link_to "Login", new_user_session_path %></li>
+                    </li>
+                  <% end %>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
-</body>
+      </div>
+    </div>
+
+    <%= content_for?(:content) ? yield(:content) : yield %>
+
+    <!-- FOOTER -->
+    <div class="container" style="padding-bottom: 20px;">
+      <p class="pull-right"><a href="#" class="scrollToTop" title="Back to top"><i class="fa fa-chevron-circle-up fa-2x"></i></a></p>
+    </div>
+    <footer>
+
+      <div class="container">
+        <h1>Get in touch</h1>
+        <div class="row">
+          <div class="col-sm-6">
+            <form style="margin-top:20px;">
+            </form>
+          </div>
+          <div class="col-sm-5 col-sm-offset-1">
+            <h2>Need help?</h2>
+            <p>Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+            <h2>FAQ</h2>
+            <p>Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+            <h2>Contact</h2>
+            <p>Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+            <h2>Copyright</h2>
+            <p>2014 xxx &middot; All Rights Reserved.</p>
+            <p>
+              Made with 
+              <%= link_to 'Ruby on Rails', "http://rubyonrails.org/", target: 'blank' %> | 
+              <%= link_to 'Bootstrap', "http://getbootstrap.com/", target: 'blank' %> | 
+              Icons by <%= link_to 'Font Awesome', "http://fortawesome.github.io/", target: 'blank' %>.
+            </p>
+          </div>
+        </div>
+      </div><!-- /.container -->
+    </footer>
+
+  </body>
 </html>

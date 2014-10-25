@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  vocabulary_id: 
+  specifyable_id: 
+
+two:
+  vocabulary_id: 
+  specifyable_id: 

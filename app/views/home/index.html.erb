@@ -1,4 +1,60 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+    <div class="site-wrapper" id="teaser">
+      <div class="site-wrapper-inner">
+        <div class="cover-container">
+          <div class="inner cover">
+            <h1 class="cover-heading">The Museum of Deir az-Zor</h1>
+            <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
+            <p class="" style="text-align:center;">
+              <a href="#text" class="scrollTo" title="Explore"><i class="fa fa-chevron-circle-down fa-2x"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<%= link_to 'Artefacts in the Museum of Deir az-Zor', artefacts_path %>
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing" id="text">
+      
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Artefacts. <span class="text-muted">Of all ages.</span></h2>
+          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo... <%= link_to 'Artefacts in the Museum of Deir az-Zor', artefacts_path %></p>
+        </div>
+        <div class="col-md-5">
+          
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-5">
+
+        </div>
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Findspots. <span class="text-muted">Around Deir az-Zor.</span></h2>
+          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo... <%= link_to 'Excavations in the area', excavations_path %></p>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Vocabularies. <span class="text-muted">Specifying the artefacts.</span></h2>
+          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo... <%= link_to 'Vocabulary definitions', vocabularies_path %></p>
+        </div>
+        <div class="col-md-5">
+
+        </div>
+      </div>
+
+
+      <!-- /END THE FEATURETTES -->
+
+    </div>

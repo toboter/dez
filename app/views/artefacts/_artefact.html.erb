@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-sm-3">
+  	<p><%= artefact.name %></p>
+  	<%= content_tag :p do %>
+  	  <small>
+  	  	<%= artefact.artefact_identificators.map{|ai| link_to(ai.excavation_name, ai.excavation)}.join(', ').html_safe %>
+  	  </small>
+  	<% end if artefact.artefact_identificators.any? %>
+  </div>
+  <div class="col-sm-2">
+
+  	<p>
+      <%= artefact.dimensions %>
+      <%= artefact.dimensions_type %>
+      <%= artefact.weight %>
+    </p>
+  </div>
+  <div class="col-sm-6">
+  	<p><%= artefact.terms.map{|t| link_to(t.prefered_term.name, t)}.join(', ').html_safe %></p>
+  	<p style="font-size: 80%"><%= truncate(artefact.comments.last.content) if artefact.comments.any? %></p>
+  </div>
+  <div class="col-sm-1">
+    <%= link_to content_tag(:i, '', class: 'fa fa-chevron-right fa-1x'), artefact, class: 'pull-right', title: 'show artefact' %>
+  </div>
+</div>

@@ -11,20 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141019163550) do
+ActiveRecord::Schema.define(version: 20141024093916) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "artefact_identificators", force: true do |t|
     t.string   "name"
-    t.string   "ident_type"
     t.integer  "excavation_id"
     t.integer  "artefact_id"
-    t.integer  "creator_id"
-    t.integer  "updater_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "fjno"
   end
 
   create_table "artefacts", force: true do |t|
@@ -45,8 +43,13 @@ ActiveRecord::Schema.define(version: 20141019163550) do
     t.string   "language"
     t.integer  "commentable_id"
     t.string   "commentable_type"
-    t.integer  "creator_id"
-    t.integer  "updater_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "dispositions", force: true do |t|
+    t.datetime "receipt_date"
+    t.integer  "artefact_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -60,6 +63,35 @@ ActiveRecord::Schema.define(version: 20141019163550) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "restorations", force: true do |t|
+    t.datetime "date_of_action"
+    t.integer  "artefact_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "specifications", force: true do |t|
+    t.integer  "vocabulary_id"
+    t.integer  "specifyable_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "specifyable_type"
+  end
+
+  add_index "specifications", ["specifyable_id"], name: "index_specifications_on_specifyable_id", using: :btree
+  add_index "specifications", ["specifyable_type"], name: "index_specifications_on_specifyable_type", using: :btree
+  add_index "specifications", ["vocabulary_id"], name: "index_specifications_on_vocabulary_id", using: :btree
+
+  create_table "terms", force: true do |t|
+    t.integer  "vocabulary_id"
+    t.string   "name"
+    t.string   "language"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "terms", ["vocabulary_id"], name: "index_terms_on_vocabulary_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -82,5 +114,23 @@ ActiveRecord::Schema.define(version: 20141019163550) do
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "vocabularies", force: true do |t|
+    t.string   "record_type"
+    t.integer  "parent_id"
+    t.integer  "creator_id"
+    t.integer  "updater_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "vocabulary_hierarchies", id: false, force: true do |t|
+    t.integer "ancestor_id",   null: false
+    t.integer "descendant_id", null: false
+    t.integer "generations",   null: false
+  end
+
+  add_index "vocabulary_hierarchies", ["ancestor_id", "descendant_id", "generations"], name: "anc_desc_idx", unique: true, using: :btree
+  add_index "vocabulary_hierarchies", ["descendant_id"], name: "desc_idx", using: :btree
 
 end

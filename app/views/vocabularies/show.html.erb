@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-sm-6">
+
+
+<p>
+  <strong>ID: <%= @vocabulary.id %></strong>
+  <span class="pull-right"><strong>Record type: </strong><%= @vocabulary.record_type %></span>
+</p>
+
+<p>
+  <i class="fa fa-bars" style="color:#428bca;"></i>
+  <strong><%= @vocabulary.prefered_term.name %></strong> (<%= @vocabulary.prefered_term.language %>)
+</p>
+
+<p>
+  <strong>Note: </strong>
+  <%= @vocabulary.prefered_note.try(:content) || content_tag(:em, 'undefined') %>
+</p>
+<p>
+  <strong>Parent:</strong>
+  <%= @vocabulary.parent_id %>
+</p>
+
+<%= link_to 'Edit', edit_vocabulary_path(@vocabulary) %> |
+<%= link_to 'Back', vocabularies_path %>
+
+  </div>
+</div>

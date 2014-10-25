@@ -17,4 +17,4 @@
 
 # Ignore password files
 /config/database.yml
-# /config/secrets.yml
+/config/secrets.yml

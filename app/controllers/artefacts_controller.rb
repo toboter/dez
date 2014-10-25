@@ -1,4 +1,5 @@
 class ArtefactsController < ApplicationController
+  layout 'page'
   before_filter :authenticate_user!, except: [:index, :show]
   before_action :set_artefact, only: [:show, :edit, :update, :destroy]
 
@@ -45,6 +46,8 @@ class ArtefactsController < ApplicationController
 
     def artefact_params
       params.require(:artefact).permit(:dimensions, :dimensions_type, :weight, :dez, :dez_index, 
-        :in_exhibition, artefact_identificators_attributes: [:id, :artefact_id, :name, :ident_type, :excavation_id, :_destroy])
+        :in_exhibition, artefact_identificators_attributes: [:id, :artefact_id, :name, :fjno, :excavation_id, :_destroy], 
+        comments_attributes: [:id, :content, :language, :_destroy], restorations_attributes: [:id, :date_of_action, :_destroy],
+        dispositions_attributes: [:id, :receipt_date, :_destroy], specifications_attributes: [:id, :vocabulary_id, :_destroy])
     end
 end
