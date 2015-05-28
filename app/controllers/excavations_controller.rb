@@ -7,10 +7,21 @@ class ExcavationsController < ApplicationController
 
   def index
     @excavations = Excavation.all
+    @hash = Gmaps4rails.build_markers(@excavations) do |excavation, marker|
+      marker.lat excavation.latitude
+      marker.lng excavation.longitude
+      marker.title excavation.name
+      marker.infowindow "<a href='#{url_for(excavation)}'>#{excavation.name}</a>"
+    end
     respond_with(@excavations)
   end
 
   def show
+    @hash = Gmaps4rails.build_markers(@excavation) do |excavation, marker|
+      marker.lat excavation.latitude
+      marker.lng excavation.longitude
+      marker.title excavation.name
+    end
     respond_with(@excavation)
   end
 
@@ -44,6 +55,6 @@ class ExcavationsController < ApplicationController
     end
 
     def excavation_params
-      params.require(:excavation).permit(:name, :dai_gazetter_id, :shortcut)
+      params.require(:excavation).permit(:name, :dai_gazetter_id, :shortcut, :creator, :updater, :address, :latitude, :longitude)
     end
 end

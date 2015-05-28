@@ -1,73 +1,93 @@
-<div class="row">
-  <%= simple_form_for @artefact, html: { class: 'form-horizontal' },
-    wrapper: :horizontal_form,
-    wrapper_mappings: {
-      check_boxes: :horizontal_radio_and_checkboxes,
-      radio_buttons: :horizontal_radio_and_checkboxes,
-      file: :horizontal_file_input,
-      boolean: :horizontal_boolean
-    } do |f| %>
-    
-    <%= f.error_notification %>
-    
-    <div class="col-sm-6">
-      <%= f.input :dez %>
-      <%= f.input :dez_index %>
-      <%= f.input :dimensions %>
-      <%= f.input :dimensions_type %>
-      <%= f.input :weight %>
-      <%= f.input :in_exhibition %>
-    
-      <%= content_tag :div, id: 'artefact_identificators' do %>
-        <%= f.simple_fields_for :artefact_identificators do |ident| %>
-          <%= render 'artefact_identificator_fields', f: ident %>
-        <% end %>
-        <div class="add-fields">
-          <%= link_to_add_association 'add identificator', f, :artefact_identificators, class: 'col-sm-offset-3' %>
-        </div>
-      <% end %>
+<%= simple_form_for @artefact, html: { class: 'form-horizontal' },
+  wrapper: :horizontal_form,
+  wrapper_mappings: {
+    check_boxes: :horizontal_radio_and_checkboxes,
+    radio_buttons: :horizontal_radio_and_checkboxes,
+    file: :horizontal_file_input,
+    boolean: :horizontal_boolean
+  } do |f| %>
 
-      <%= content_tag :div, id: 'specifications' do %>
-        <%= f.simple_fields_for :specifications do |ident| %>
-          <%= render 'specification_fields', f: ident %>
-        <% end %>
-        <div class="add-fields">
-          <%= link_to_add_association 'add specification', f, :specifications, class: 'col-sm-offset-3' %>
-        </div>
-      <% end %>
+  <div class="row">
+    <div class="col-sm-12">   
+      <%= f.error_notification %>
     </div>
-
+  </div>
+  <div class="row">
     <div class="col-sm-6">
-      <%= content_tag :div, id: 'dispositions' do %>
-        <%= f.simple_fields_for :dispositions do |ident| %>
-          <%= render 'disposition_fields', f: ident %>
-        <% end %>
-        <div class="add-fields">
-          <%= link_to_add_association 'add disposition', f, :dispositions, class: 'col-sm-offset-3' %>
-        </div>
-      <% end %>
+      <h4>General info</h4>
+      <div class="general-fields">
+        <%= f.input :dez %>
+        <%= f.input :dez_index %>
+        <%= f.input :in_exhibition %>
+        <%= f.input :state_of_preservation %>
+        <%= f.input :image, as: :file %>
+        <%= f.input :drawing, as: :file %>
+  
+        <%= f.input :dimensions %>
+        <%= f.input :dimensions_type %>
+        <%= f.input :weight %>
 
-      <%= content_tag :div, id: 'restorations' do %>
-        <%= f.simple_fields_for :restorations do |ident| %>
-          <%= render 'restoration_fields', f: ident %>
-        <% end %>
-        <div class="add-fields">
-          <%= link_to_add_association 'add restoration', f, :restorations, class: 'col-sm-offset-3' %>
-        </div>
-      <% end %>
-
+        <%= f.input :publications, as: :text %>
+      </div>
       <%= content_tag :div, id: 'comments' do %>
+        <h4>Notes</h4>
         <%= f.simple_fields_for :comments do |ident| %>
           <%= render 'comment_fields', f: ident %>
         <% end %>
         <div class="add-fields">
-          <%= link_to_add_association 'add note', f, :comments, class: 'col-sm-offset-3' %>
+          <%= link_to_add_association 'Add note', f, :comments, class: 'btn btn-default btn-xs' %>
+        </div>
+      <% end %>
+
+      <%= f.button :submit, class: 'btn btn-primary', style: 'margin-top:20px;' %>
+    </div>
+    <div class="col-sm-6">
+      <%= content_tag :div, id: 'artefact_identificators' do %>
+        <h4>Identificators</h4>
+        <%= f.simple_fields_for :artefact_identificators do |ident| %>
+          <%= render 'artefact_identificator_fields', f: ident %>
+        <% end %>
+        <div class="add-fields">
+          <%= link_to_add_association 'Add identificator', f, :artefact_identificators, class: 'btn btn-default btn-xs' %>
+        </div>
+      <% end %>
+      <hr>
+      <%= content_tag :div, id: 'specifications' do %>
+        <h4>Classification/Material/Technique</h4>
+        <%= f.simple_fields_for :specifications do |ident| %>
+          <%= render partial: 'specification_fields', locals: {f: ident, hierarchy: Vocabulary.roots } %>
+        <% end %>
+        <div class="add-fields" style="display:inline;">
+          <% for hierarchy in Vocabulary.roots do %>
+            <%= link_to_add_association "Add #{hierarchy.prefered_term.name}", f, :specifications, :render_options => {locals: { hierarchy: hierarchy }}, class: 'btn btn-default btn-xs' %>
+          <% end %>
+        </div>
+      <% end %>
+      <hr>
+      <%= content_tag :div, id: 'dispositions' do %>
+        <h4>Disposition</h4>
+        <%= f.simple_fields_for :dispositions do |ident| %>
+          <%= render 'disposition_fields', f: ident %>
+        <% end %>
+        <div class="add-fields">
+          <%= link_to_add_association 'Add disposition', f, :dispositions, class: 'btn btn-default btn-xs' %>
+        </div>
+      <% end %>
+      <hr>
+      <%= content_tag :div, id: 'restorations' do %>
+        <h4>Restorations</h4>
+        <%= f.simple_fields_for :restorations do |ident| %>
+          <%= render 'restoration_fields', f: ident %>
+        <% end %>
+        <div class="add-fields">
+          <%= link_to_add_association 'Add restoration', f, :restorations, class: 'btn btn-default btn-xs' %>
         </div>
       <% end %>
     </div>
-
+  </div>
+  <div class="row">
     <div class="col-sm-12">
-      <%= f.button :submit, class: 'col-sm-offset-3', style: 'margin-top:20px;' %>
+      
     </div>
-  <% end %>
-</div>
+  </div>
+<% end %>

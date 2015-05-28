@@ -4,45 +4,74 @@
     <%= link_to 'Add Artefact', new_artefact_path, class: 'btn btn-default pull-right' if user_signed_in? %>
   </h1>
 <% end %>
-<table class="table table-bordered table-hover">
-  <thead>
-    <tr>
-      <td class="col-sm-3">Identificators</td>
-      <td class="col-sm-2">Dimensions</td>
-      <td class="col-sm-6">Info</td>
-      <td></td>
-    </tr>
-  </thead>
-  <tbody>
-    <% @artefacts.order(dez: :asc).each do |artefact| %>
-      <tr>
-        <td>
-    <p><%= artefact.name %></p>
-    <%= content_tag :p do %>
-      <small>
-        <%= artefact.artefact_identificators.map{|ai| link_to(ai.excavation_name, ai.excavation)}.join(', ').html_safe %>
-      </small>
-    <% end if artefact.artefact_identificators.any? %>
-  </td>
-  <td class="col-sm-2">
-    <p>
-      <%= artefact.dimensions %>
-      <%= artefact.dimensions_type %>
-      <%= artefact.weight %>
-    </p>
-  </td>
-  <td class="col-sm-6">
-    <p><%= artefact.terms.map{|t| link_to(t.prefered_term.name, t)}.join(', ').html_safe %></p>
-    <p style="font-size: 80%"><%= truncate(artefact.comments.last.content) if artefact.comments.any? %></p>
-  </td>
-  <td class="col-sm-1">
-    <%= link_to content_tag(:i, '', class: 'fa fa-chevron-right fa-1x'), artefact, class: 'pull-right', title: 'show artefact' %>
-  </td>
-</tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="row">
+  <div class="col-sm-8">
+    <%= will_paginate(@artefacts, previous_label: '&laquo;', next_label: '&raquo;', renderer: WillPaginate::ActionView::BootstrapLinkRenderer) %>
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <td>Identificators</td>
+          <td>Info</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @artefacts.order(dez: :asc).each do |artefact| %>
+          <tr>
+            <td>
+              <p>
+                <small>
+                  <%= content_tag :i, '', class: "fa fa-university pull-right text-muted", title: 'exhibited' if artefact.in_exhibition %>
+                  <%= content_tag :i, '', class: "fa fa-file-image-o pull-right text-muted", title: 'with photo' if artefact.image %>
+                </small>
+                <%= link_to artefact.name, artefact, style: 'font-weight: bold' %>
+              </p>
+              <%= content_tag :p do %>
+                <small>
+                  <%= artefact.artefact_identificators.map{|ai| "#{link_to(ai.excavation_name, ai.excavation)} #{ai.name}"}.join(', ').html_safe %>
+                </small>
+              <% end if artefact.artefact_identificators.any? %>
+            </td>
+            <td class="col-sm-9">
+              <%= link_to content_tag(:i, '', class: 'fa fa-chevron-right fa-1x'), artefact, class: 'pull-right', title: 'show artefact' %>
+              <ul class="list-unstyled">
+                <% for term in artefact.terms.order(parent_id: :asc) do %>
+                  <li><%= term.self_and_ancestors.reverse.map{|t| link_to t.root? ? content_tag(:span, t.prefered_term.name, style: 'font-weight: normal') : t.prefered_term.name, t }.join(' > ').html_safe %></li>
+                <% end %>
+              </ul>
+              <p style="font-size: 80%"><%= truncate(artefact.comments.last.content) if artefact.comments.any? %></p>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-sm-3 col-sm-offset-1">
+    <%= content_tag :div, class: "well" do %>
+      <h4>Filters</h4>
+      <%= search_form_for @q do |f| %>
+        <%= f.input :fdez_cont, required: false, label: 'DeZ contains', placeholder: 'No + index' %>
+        <%= f.input :excavations_name_or_excavations_shortcut_cont, required: false, label: 'Excavation', placeholder: 'name or shortcut' %>
+        <%= f.input :artefact_identificators_name_cont, required: false, label: 'Excavations id', placeholder: 'name' %>
 
-<br>
+        <div style="border:1px solid red;padding:5px;">
+        <% Vocabulary.roots.each do |root| %>
+          <p><strong><%= root.prefered_term.name %></strong><br>
+            <% root.descendants.each do |term| %>
+              <%= check_box_tag('q[terms_id_in][]', term.id) %>
+              <%= term.prefered_term.name %>
+            <% end %>
+          </p>
+        <% end %>
+        </div>
+
+        
+
+        <div class="submit" style="margin-top:10px;">
+          <%= f.submit 'Filter', class: 'btn btn-default' %><%= link_to 'Reset', artefacts_path, class: 'btn btn-default' %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
 
 

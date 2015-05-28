@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141024093916) do
+ActiveRecord::Schema.define(version: 20150206134539) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,10 @@ ActiveRecord::Schema.define(version: 20141024093916) do
     t.boolean  "in_exhibition"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "image_uid"
+    t.string   "state_of_preservation"
+    t.string   "drawing_uid"
+    t.text     "publications"
   end
 
   create_table "comments", force: true do |t|
@@ -45,6 +49,7 @@ ActiveRecord::Schema.define(version: 20141024093916) do
     t.string   "commentable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "prefered"
   end
 
   create_table "dispositions", force: true do |t|
@@ -52,6 +57,7 @@ ActiveRecord::Schema.define(version: 20141024093916) do
     t.integer  "artefact_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "location"
   end
 
   create_table "excavations", force: true do |t|
@@ -62,6 +68,9 @@ ActiveRecord::Schema.define(version: 20141024093916) do
     t.integer  "updater_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "longitude"
+    t.float    "latitude"
+    t.string   "address"
   end
 
   create_table "restorations", force: true do |t|
@@ -89,6 +98,7 @@ ActiveRecord::Schema.define(version: 20141024093916) do
     t.string   "language"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "prefered"
   end
 
   add_index "terms", ["vocabulary_id"], name: "index_terms_on_vocabulary_id", using: :btree

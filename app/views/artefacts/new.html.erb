@@ -1,5 +1,10 @@
-<h1>New artefact</h1>
+<% content_for :title_bar do %>
+  <h1>
+    <%= link_to content_tag(:i, '', class: "fa fa-chevron-left"), artefacts_path, title: 'back' %> New artefact
+    <%= content_tag :div, class: 'pull-right' do %>
+      <%= link_to 'Discard changes/back', :back, class: 'btn btn-default' %>
+    <% end if user_signed_in? %>
+  </h1>
+<% end %>
 
 <%= render 'form' %>
-
-<%= link_to 'Back', artefacts_path %>

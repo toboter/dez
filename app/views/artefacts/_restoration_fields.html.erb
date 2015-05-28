@@ -1,5 +1,11 @@
 <%= content_tag :div, class: 'nested-fields' do %>
-  <%= f.input :date_of_action, as: :date %>
-
-  <%= link_to_remove_association "remove disposition", f, class: 'col-sm-offset-3' %>
+  <%= f.input :date_of_action, as: :date, start_year: Date.today.year - 100, label: "Date of action #{content_tag :span, link_to_remove_association("remove", f), class: 'remove-link'}".html_safe %>
+  <%= content_tag :div, id: 'comments' do %>
+    <%= f.simple_fields_for :comments do |ident| %>
+      <%= render 'comment_fields', f: ident %>
+    <% end %>
+    <div class="add-fields">
+      <%= link_to_add_association 'Add note', f, :comments, class: 'col-sm-offset-3 btn btn-default btn-xs' %>
+    </div>
+  <% end %>
 <% end %>

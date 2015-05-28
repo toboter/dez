@@ -1,29 +1,23 @@
-<h1>Listing vocabularies</h1>
+<% content_for :title_bar do %>
+  <h1>
+    Vocabularies
+    <%= link_to 'Add vocabulary', new_vocabulary_path, class: 'btn btn-default pull-right' if user_signed_in? %>
+  </h1>
+<% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Record type</th>
-      <th>Parent</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @vocabularies.arrange_as_tree.each do |vocabulary| %>
-      <tr>
-        <td><%= vocabulary.prefered_term.name %></td>
-        <td><%= vocabulary.record_type %></td>
-        <td><%= vocabulary.parent_id %></td>
-        <td><%= link_to 'Show', vocabulary %></td>
-        <td><%= link_to 'Edit', edit_vocabulary_path(vocabulary) %></td>
-        <td><%= link_to 'Destroy', vocabulary, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Vocabulary', new_vocabulary_path %>
+<h2>
+  <i class="fa fa-bars" style="color:#428bca;"></i>
+  Terms
+</h2>
+<div class="row">
+  <div class="col-sm-4">
+    <ul class="list-unstyled">
+      <% for term in @vocabularies.arrange_as_tree do %>
+        <%= content_tag :li do %>
+          <%= link_to term.prefered_term.name, term, style: "#{'margin-left:'+(term.depth*20).to_s+'px'}; #{'font-weight:bold;margin-top:10px;' if term.root?}" %> 
+          <%= content_tag :span, term.record_type, class: 'text-muted pull-right', style: 'font-size:85%;' %>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+</div>

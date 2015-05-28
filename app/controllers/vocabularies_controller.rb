@@ -11,11 +11,12 @@ class VocabulariesController < ApplicationController
   end
 
   def show
+    @artefacts = @vocabulary.self_and_descendants.map{ |v| v.artefacts }.flatten.sort_by { |i| [i ? 0 : 1, i] }
     respond_with(@vocabulary)
   end
 
   def new
-    @vocabulary = Vocabulary.new
+    @vocabulary = Vocabulary.new(parent_id: params[:parent_id])
     @vocabulary.terms.build
     respond_with(@vocabulary)
   end
@@ -45,7 +46,7 @@ class VocabulariesController < ApplicationController
     end
 
     def vocabulary_params
-      params.require(:vocabulary).permit(:record_type, :parent_id, terms_attributes: [:id, :name, :language, :_destroy],
-        comments_attributes: [:id, :content, :language, :_destroy])
+      params.require(:vocabulary).permit(:record_type, :parent_id, terms_attributes: [:id, :prefered, :name, :language, :_destroy],
+        comments_attributes: [:id, :prefered, :content, :language, :_destroy])
     end
 end

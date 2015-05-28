@@ -1,6 +1,11 @@
-<h1>Editing excavation</h1>
+<% content_for :title_bar do %>
+  <h1>
+    <%= link_to content_tag(:i, '', class: "fa fa-chevron-left"), excavations_path, title: 'back' %> 
+    Editing excavation
+    <%= content_tag :div, class: 'pull-right' do %>
+      <%= link_to 'Discard changes/back', :back, class: 'btn btn-default' %>
+    <% end if user_signed_in? %>
+  </h1>
+<% end %>
 
 <%= render 'form' %>
-
-<%= link_to 'Show', @excavation %> |
-<%= link_to 'Back', excavations_path %>

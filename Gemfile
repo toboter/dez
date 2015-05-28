@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.4'
+gem 'rails', '4.1.7'
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Use SCSS for stylesheets
@@ -13,7 +13,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-# gem 'therubyracer',  platforms: :ruby
+gem 'therubyracer',  platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -37,6 +37,11 @@ gem 'autoprefixer-rails'
 gem 'simple_form', '~> 3.1.0.rc2'
 gem 'cocoon'
 gem 'closure_tree', '~> 5.1.0'
+gem 'will_paginate'
+gem 'geocoder'
+gem 'gmaps4rails'
+gem 'ransack'
+gem 'dragonfly'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

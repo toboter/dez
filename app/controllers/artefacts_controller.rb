@@ -6,7 +6,8 @@ class ArtefactsController < ApplicationController
   respond_to :html, :json
 
   def index
-    @artefacts = Artefact.all
+    @q = Artefact.search(params[:q])
+    @artefacts = @q.result(distinct: true).paginate(page: params[:page], per_page: 30)
     respond_with(@artefacts)
   end
 
@@ -30,8 +31,12 @@ class ArtefactsController < ApplicationController
   end
 
   def update
-    flash[:notice] = 'Artefact was successfully updated.' if @artefact.update(artefact_params.merge(updater: current_user))
-    respond_with(@artefact)
+    if @artefact.update(artefact_params.merge(updater: current_user))
+      flash[:notice] = 'Artefact was successfully updated.'
+      respond_with(@artefact)
+    else 
+      raise 'error while updating'
+    end
   end
 
   def destroy
@@ -45,9 +50,9 @@ class ArtefactsController < ApplicationController
     end
 
     def artefact_params
-      params.require(:artefact).permit(:dimensions, :dimensions_type, :weight, :dez, :dez_index, 
-        :in_exhibition, artefact_identificators_attributes: [:id, :artefact_id, :name, :fjno, :excavation_id, :_destroy], 
-        comments_attributes: [:id, :content, :language, :_destroy], restorations_attributes: [:id, :date_of_action, :_destroy],
-        dispositions_attributes: [:id, :receipt_date, :_destroy], specifications_attributes: [:id, :vocabulary_id, :_destroy])
+      params.require(:artefact).permit(:image, :drawing, :publications, :dimensions, :dimensions_type, :weight, :dez, :dez_index, 
+        :in_exhibition, :state_of_preservation, artefact_identificators_attributes: [:id, :artefact_id, :name, :fjno, :excavation_id, :_destroy, comments_attributes: [:id, :content, :language, :_destroy]], 
+        comments_attributes: [:id, :content, :language, :_destroy], restorations_attributes: [:id, :date_of_action, :_destroy, comments_attributes: [:id, :content, :language, :_destroy]],
+        dispositions_attributes: [:id, :receipt_date, :location, :_destroy, comments_attributes: [:id, :content, :language, :_destroy]], specifications_attributes: [:id, :vocabulary_id, :_destroy])
     end
 end

@@ -14,7 +14,10 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+/public/system
 
 # Ignore password files
 /config/database.yml
 /config/secrets.yml
+
+/.rvmrc

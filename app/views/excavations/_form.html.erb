@@ -1,13 +1,31 @@
-<%= simple_form_for(@excavation) do |f| %>
-  <%= f.error_notification %>
-
-  <div class="form-inputs">
-    <%= f.input :name %>
-    <%= f.input :dai_gazetter_id %>
-    <%= f.input :shortcut %>
+<%= simple_form_for @excavation, html: { class: 'form-horizontal' },
+  wrapper: :horizontal_form,
+  wrapper_mappings: {
+    check_boxes: :horizontal_radio_and_checkboxes,
+    radio_buttons: :horizontal_radio_and_checkboxes,
+    file: :horizontal_file_input,
+    boolean: :horizontal_boolean
+  } do |f| %>
+  <div class="row">
+    <div class="col-sm-12">
+      <%= f.error_notification %>
+    </div>
   </div>
-
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="general-fields">
+        <%= f.input :dai_gazetter_id %>
+        <%= f.input :name %>
+        <%= f.input :shortcut %>
+      </div>
+      <%= f.button :submit, class: 'btn btn-primary', style: 'margin-top:20px;' %>
+    </div>
+    <div class="col-sm-6">
+      <div class="well" id="external-data">
+        <!-- <%= f.input :address %> -->
+        <%= f.input :latitude %>
+        <%= f.input :longitude %>
+      </div>
+    </div>
   </div>
 <% end %>

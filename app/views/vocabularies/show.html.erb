@@ -1,28 +1,83 @@
+<% content_for :title_bar do %>
+  <h1>
+    <%= link_to content_tag(:i, '', class: "fa fa-chevron-left"), vocabularies_path, title: 'back' %> <%= @vocabulary.prefered_term.name %>
+    <%= content_tag :div, class: 'pull-right' do %>
+      <%= link_to 'Edit term', edit_vocabulary_path(@vocabulary), class: 'btn btn-default' %>
+      <%= link_to 'Add sub term', new_vocabulary_path(parent_id: @vocabulary), class: 'btn btn-default' %>
+      <%= link_to 'Destroy', @vocabulary, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-default btn-danger' %>
+    <% end if user_signed_in? %>
+  </h1>
+<% end %>
+
 <div class="row">
-  <div class="col-sm-6">
+  <div class="col-sm-5">
+    <p>
+      <strong>ID: <%= @vocabulary.id %></strong>
+      <span class="pull-right"><strong>Record type: </strong><%= @vocabulary.record_type %></span>
+    </p>
+    <div id="term">
+      <p>
+        <i class="fa fa-bars" style="color:#428bca;"></i>
+        <strong><%= @vocabulary.prefered_term.name %></strong> (<%= @vocabulary.prefered_term.language %>)
+      </p>
+    </div>
+    <div id="note">
+      <p>
+        <strong>Note: </strong>
+        <%= @vocabulary.prefered_note.try(:content) || content_tag(:em, 'undefined') %>
+      </p>
+    </div>
+    <div id="terms">
+      <strong>Terms:</strong>
+      <ul class="list-unstyled">
+        <% for term in @vocabulary.terms.order(id: :asc) %>
+          <%= content_tag :li, style: "padding-left:20px;#{'font-weight:bold;' if term == @vocabulary.prefered_term}" do %>
+            <%= term.name %> (<%= term.language %>)
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+    <div id="hierarchy">
+      <strong>Hierarchical Position:</strong>
+      <ul class="list-unstyled">
+        <% for term in @vocabulary.root.self_and_descendants.arrange_as_tree do %>
+          <%= content_tag :li, style: "#{'font-weight:bold;' if term == @vocabulary}" do %>
+            <%= link_to term.prefered_term.name, term, style: 'margin-left:'+(term.depth*15).to_s+'px' %>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+    <div id="notes">
+      <strong>Additional Notes:</strong>
+      <% for note in @vocabulary.other_notes %>
+        <p><%= note.content %> (<%= note.language %>)</p>
+      <% end %>
+    </div>
 
+    <% if user_signed_in? %>
+    <br>
+      <p>
+        <strong>Creator:</strong>
+        <%= @vocabulary.creator.try(:email) %>
+      <br>
+        <strong>Updater:</strong>
+        <%= @vocabulary.updater.try(:email) %>
+      </p>
+    <% end %>
+  </div>
 
-<p>
-  <strong>ID: <%= @vocabulary.id %></strong>
-  <span class="pull-right"><strong>Record type: </strong><%= @vocabulary.record_type %></span>
-</p>
-
-<p>
-  <i class="fa fa-bars" style="color:#428bca;"></i>
-  <strong><%= @vocabulary.prefered_term.name %></strong> (<%= @vocabulary.prefered_term.language %>)
-</p>
-
-<p>
-  <strong>Note: </strong>
-  <%= @vocabulary.prefered_note.try(:content) || content_tag(:em, 'undefined') %>
-</p>
-<p>
-  <strong>Parent:</strong>
-  <%= @vocabulary.parent_id %>
-</p>
-
-<%= link_to 'Edit', edit_vocabulary_path(@vocabulary) %> |
-<%= link_to 'Back', vocabularies_path %>
-
+  <div class="col-sm-6 col-sm-offset-1">
+    <h4>Artefacts with/for <%= @vocabulary.prefered_term.name %></h4>
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <td>Identificators</td>
+          <td>Info</td>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render @artefacts %>
+      </tbody>
+    </table>
   </div>
 </div>

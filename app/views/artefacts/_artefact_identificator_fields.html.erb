@@ -1,6 +1,13 @@
 <%= content_tag :div, class: 'nested-fields' do %>
-  <%= f.association :excavation %>
+  <%= f.association :excavation, label: "Excavation #{content_tag :span, link_to_remove_association("remove", f), class: 'remove-link'}".html_safe %>
   <%= f.input :name, label: 'Original identificator', hint: 'Please omit any excavation shortcuts here.' %>
   <%= f.input :fjno, label: 'Fundjournal', hint: 'If present.' %>
-  <%= link_to_remove_association "remove identificator", f, class: 'col-sm-offset-3' %>
+  <%= content_tag :div, id: 'comments' do %>
+    <%= f.simple_fields_for :comments do |ident| %>
+      <%= render 'comment_fields', f: ident %>
+    <% end %>
+    <div class="add-fields">
+      <%= link_to_add_association 'Add note', f, :comments, class: 'col-sm-offset-3 btn btn-default btn-xs' %>
+    </div>
+  <% end %>
 <% end %>

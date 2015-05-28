@@ -1,34 +1,43 @@
-<div class="row">
-  <div class="col-sm-8">
-	<%= simple_form_for(@vocabulary) do |f| %>
+<%= simple_form_for @vocabulary, html: { class: 'form-horizontal' },
+      wrapper: :horizontal_form,
+      wrapper_mappings: {
+        check_boxes: :horizontal_radio_and_checkboxes,
+        radio_buttons: :horizontal_radio_and_checkboxes,
+        file: :horizontal_file_input,
+        boolean: :horizontal_boolean
+      } do |f| %>
+  <div class="row">
+    <div class="col-sm-12">
       <%= f.error_notification %>
-
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="general-fields" style="margin-top:20px;">
+        <%= f.input :record_type, collection: ["hierarchy", "concept"] %>
+        <%= f.input :parent_id, collection: Vocabulary.possible_parents(@vocabulary), label_method: :name_for_select, value_method: :id, include_blank: true %>
+      </div>
       <%= content_tag :div, id: 'terms' do %>
         <%= f.simple_fields_for :terms do |ident| %>
           <%= render 'term_fields', f: ident %>
         <% end %>
         <div class="add-fields">
-          <%= link_to_add_association 'add language', f, :terms, class: 'col-sm-offset-3' %>
+          <%= link_to_add_association 'add language', f, :terms, class: 'btn btn-default btn-xs' %>
         </div>
       <% end %>
-
-  	  <div class="form-inputs">
-    	<%= f.input :record_type, collection: ["hierarchy", "concept"] %>
-    	<%= f.input :parent_id, collection: Vocabulary.possible_parents(@vocabulary), label_method: :name_for_select, value_method: :id, include_blank: true %>
-  	  </div>
-
+      <%= f.button :submit, class: 'btn btn-primary', style: 'margin-top:20px;' %>
+    </div>
+    <div class="col-sm-6">
+      <h4>Notes</h4>
       <%= content_tag :div, id: 'comments' do %>
         <%= f.simple_fields_for :comments do |ident| %>
           <%= render 'comment_fields', f: ident %>
         <% end %>
         <div class="add-fields">
-          <%= link_to_add_association 'add note', f, :comments, class: 'col-sm-offset-3' %>
+          <%= link_to_add_association 'add note', f, :comments, class: 'btn btn-default btn-xs' %>
         </div>
       <% end %>
 
-  	  <div class="form-actions">
-    	<%= f.button :submit %>
-  	  </div>
-	<% end %>
+    </div>
   </div>
-</div>
+<% end %>

@@ -3,6 +3,7 @@ class Vocabulary < ActiveRecord::Base
 
   has_many :terms, dependent: :destroy
   has_many :specifications, dependent: :destroy
+  has_many :artefacts, through: :specifications, source: :specifyable, source_type: "Artefact"
   has_many :comments, as: :commentable, dependent: :destroy
 
   belongs_to :creator, class_name: 'User'
@@ -34,11 +35,15 @@ class Vocabulary < ActiveRecord::Base
   end
 
   def prefered_term
-  	terms.first
+  	terms.where(prefered: true).first || terms.first
   end
 
   def prefered_note
-    comments.first
+    comments.where(prefered: true).first || comments.first
+  end
+
+  def other_notes
+    comments.where(prefered: false)
   end
 
 end

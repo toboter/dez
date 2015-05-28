@@ -9,57 +9,91 @@
 <% end %>
 
 <div class="row">
-  <div class="col-sm-6">
-<p>
-  <strong>Dez:</strong>
-  <%= @artefact.dez %><%= @artefact.dez_index %>
-</p>
 
+  <div class="col-sm-5 artefact-desc">
+    <%= content_tag :ul, class: 'list-unstyled' do %>
+      <h4>Excavation ids</h4>
+      <% @artefact.artefact_identificators.each do |ai| %>
+        <li><%= link_to(ai.excavation_name, ai.excavation) %> <%= ai.name %> <%= content_tag :span, "(Fj.Nr: #{ai.fjno})" if ai.fjno.present? %> </li>
+      <% end %>
+    <% end if @artefact.artefact_identificators.any? %>
+    
+    <h4>Artefact details</h4>
+    <ul class="list-unstyled">
+    <% for term in @artefact.terms.order(parent_id: :asc) do %>
+      <li><%= term.self_and_ancestors.reverse.map{|t| link_to t.root? ? content_tag(:span, t.prefered_term.name, style: 'font-weight: bold') : t.prefered_term.name, t }.join(' > ').html_safe %></li>
+    <% end %>
+    </ul>
+    <p>
+      <strong>Dimensions:</strong>
+      <%= @artefact.dimensions %><br>
+      <!-- <strong>Dimensions type:</strong>
+      <%= @artefact.dimensions_type %><br> -->
+      <strong>Weight:</strong>
+      <%= @artefact.weight %>
+    </p>
+    
+    <h4>
+      <small><%= content_tag :i, '', class: "fa #{@artefact.in_exhibition ? 'fa-university' : 'fa-archive'}", title: (@artefact.in_exhibition ? 'exhibited' : 'archived') %></small>
+      Disposition
+    </h4>
+    <% @artefact.dispositions.order(receipt_date: :desc).each do |disp| %>
+      <p>
+        <%= disp.location %> 
+        <small>(<%= disp.receipt_date.to_date.to_s(:long) %>)</small>
+        <ul class="text-muted list-unstyled">
+          <% disp.comments.order(created_at: :desc).each do |c| %>
+            <li><%= c.content %> (<%= c.language %>)</li>
+          <% end %>
+        </ul>
+      </p>
+    <% end %>
+    
+    <h4>
+      <small><%= content_tag :i, '', class: "fa fa-medkit", title: 'restored' %></small>
+      Restorations
+    </h4>
+    <% @artefact.restorations.order(date_of_action: :desc).each do |rest| %>
+      <p>
+        <%= rest.date_of_action.to_date.to_s(:long) %>
+        <ul class="text-muted list-unstyled">
+          <% rest.comments.order(created_at: :desc).each do |c| %>
+            <li><%= c.content %> (<%= c.language %>)</li>
+          <% end %>
+        </ul>
+      </p>
+    <% end %>
 
-<%= content_tag :p do %>
-  <%= @artefact.artefact_identificators.map{|ai| link_to(ai.excavation_name, ai.excavation)}.join(', ').html_safe %>
-<% end if @artefact.artefact_identificators.any? %>
+    <h4>
+      <small><%= content_tag :i, '', class: "fa fa-comments", title: 'notes' %></small>
+      Notes
+    </h4>
+    <p style=""><%= truncate(@artefact.comments.last.content) if @artefact.comments.any? %></p>
 
-<p>
-  <strong>Dimensions:</strong>
-  <%= @artefact.dimensions %>
-</p>
+    <div id="publication">
+      <h4>Publications</h4>
+      <%= @artefact.publications %>
+    </div>
 
-<p>
-  <strong>Dimensions type:</strong>
-  <%= @artefact.dimensions_type %>
-</p>
+    <% if user_signed_in? %>
+      <br/><br/>
+      <p>
+        <strong>Creator:</strong>
+        <%= @artefact.creator.try(:email) %>
+      <br>
+        <strong>Updater:</strong>
+        <%= @artefact.updater.try(:email) %>
+      </p>
+    <% end %>
+  </div>
+  <div class="col-sm-6 col-sm-offset-1">
+    <div id="image">
+      <%= image_tag @artefact.image.thumb('600x900').url, class: 'img-responsive', id: "artefact-image-#{@artefact.id}-#{@artefact.created_at.to_s.parameterize}" if @artefact.image_stored? %>
+    </div>
+    <br/>
+    <div id="drawing">
+      <%= image_tag @artefact.drawing.thumb('600x900').url, class: 'img-responsive', id: "artefact-drawing-#{@artefact.id}-#{@artefact.created_at.to_s.parameterize}" if @artefact.drawing_stored? %>
+    </div>
 
-<p>
-  <strong>Weight:</strong>
-  <%= @artefact.weight %>
-</p>
-
-<p>
-  <strong>In exhibition:</strong>
-  <%= @artefact.in_exhibition %>
-</p>
-
-
-
-    <p><%= @artefact.terms.map{|t| link_to(t.prefered_term.name, t)}.join(', ').html_safe %></p>
-    <p style="font-size: 80%"><%= truncate(@artefact.comments.last.content) if @artefact.comments.any? %></p>
-
-restorations
-dispositions
-
-
-<% if user_signed_in? %>
-<p>
-  <strong>Creator:</strong>
-  <%= @artefact.creator.email %>
-</p>
-
-<p>
-  <strong>Updater:</strong>
-  <%= @artefact.updater.email %>
-</p>
-<% end %>
-
-</div>
+  </div>
 </div>
