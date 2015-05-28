@@ -43,6 +43,8 @@ gem 'gmaps4rails'
 gem 'ransack'
 gem 'dragonfly'
 
+gem 'rails_12factor', group: :production
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
