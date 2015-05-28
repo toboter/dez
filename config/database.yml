@@ -82,7 +82,8 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  <<: *default
-  database: DeirMuseum_production
-  username: DeirMuseum
-  password: <%= ENV['DEIRMUSEUM_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>
+  # <<: *default
+  # database: DeirMuseum_production
+  # username: DeirMuseum
+  # password: <%= ENV['DEIRMUSEUM_DATABASE_PASSWORD'] %>
