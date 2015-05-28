@@ -88,7 +88,7 @@ Rails.application.configure do
     domain: 'localhost',
     authentication: "plain",
     enable_starttls_auto: true,
-    user_name: Rails.application.secrets.MAIL_USERNAME,
-    password: Rails.application.secrets.MAIL_PASSWORD
+    user_name: ENV["MAIL_USERNAME"],
+    password: ENV["MAIL_PASSWORD"]
   }
 end
