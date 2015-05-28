@@ -17,7 +17,6 @@
 /public/system
 
 # Ignore password files
-/config/database.yml
 /config/secrets.yml
 
 /.rvmrc
